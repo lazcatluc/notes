@@ -10,5 +10,13 @@ module.controller('NotesController',
                 });
         };
 
+        $scope.add = function() {
+            $http.post("/notes", {text: $scope.text})
+                .success(function() {
+                    $scope.text = "";
+                    update();
+                });
+        };
+
         update();
     });

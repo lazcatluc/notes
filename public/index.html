@@ -11,6 +11,13 @@
         <div ng-repeat="note in notes">
             <p class="note">{{note.text}}</p>
         </div>
+
+        <div>
+            <label for="newNote">Add note:</label>
+            <textarea rows="10" cols="50" ng-model="text" id="newNote"></textarea>
+        </div>
+        <div><button ng-click="add()">Add note</button></div>
+
     </body>
 
 </html>
