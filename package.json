@@ -1,0 +1,14 @@
+{
+  "name": "notes",
+  "version": "0.0.1",
+  "description": "sample notes application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Catalin",
+  "dependencies": {
+    "express": "^4.14.1"
+  }
+}
