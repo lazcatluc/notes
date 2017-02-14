@@ -17,6 +17,11 @@ module.controller('NotesController',
                     update();
                 });
         };
+        
+        $scope.remove = function (noteId) {
+            $http.delete("/notes", {params: {id:noteId}});
+            update();
+        };
 
         update();
     });
