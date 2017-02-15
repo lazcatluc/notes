@@ -3,17 +3,21 @@ var app = express();
 var path = require('path');
 var session = require('express-session');
 var bodyParser = require('body-parser');
+var MongoStore = require('connect-mongo/es5')(session);
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(session({
+    store: new MongoStore({
+        url: 'mongodb://localhost:27017/angular_session'
+    }),
     secret: 'angular_tutorial',
     resave: true,
     saveUninitialized: true
 }));
 
-app.get("/notes", function(req,res) {
+app.get("/notes", function(req, res) {
     res.send(req.session.notes||[]);
 });
 
@@ -30,7 +34,6 @@ app.post("/notes", function(req, res) {
 });
 
 app.delete("/notes", function(req,res) {
-    console.log("Deleting "+req.query.id);
     var id = req.query.id;
     var notes = req.session.notes||[];
     var updatedNotesList = [];
@@ -42,6 +45,5 @@ app.delete("/notes", function(req,res) {
     req.session.notes = updatedNotesList;
     res.end();
 });
-
 
 app.listen(3000);
