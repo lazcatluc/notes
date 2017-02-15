@@ -26,19 +26,52 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+function findNotesInOrder(query, order) {
+    if (order === undefined) {
+        order = 1;
+    }
+    return db.notes.find(query).sort({order: order});
+}
+
+function withTopNoteOrder(callback, myOrder) {
+    findNotesInOrder({}, myOrder).limit(1).toArray(function(err, items) {
+        var order = 0;
+        if (items.length > 0) {
+            order = items[0].order;
+        }
+        callback(order);
+    });
+}
+
+function withBottomNoteOrder(callback) {
+    return withTopNoteOrder(callback, -1);
+}
+
 app.get("/notes", function(req, res) {
-    db.notes.find(req.query).toArray(function(err, items) {
+    findNotesInOrder(req.query).toArray(function(err, items) {
         res.send(items);
     });
 });
 
 app.post("/notes", function(req, res) {
-    db.notes.insert(req.body);
-    res.end();
+    var note = req.body;
+    note.date = new Date().getTime();
+    withBottomNoteOrder(function (order) {
+        note.order = order + 1;
+        db.notes.insert(note);
+        res.end();
+    });
+});
+
+app.post("/top", function(req, res) {
+    var note = req.body;
+    withTopNoteOrder(function (order) {
+        db.notes.update({_id: ObjectId(note._id)}, {$set: {order: order - 1}});
+        res.end();
+    });
 });
 
 app.delete("/notes", function(req,res) {
-    console.log(req.query.id);
     db.notes.remove({_id: ObjectId(req.query.id)}, function(err, data) {
         res.end();
     });

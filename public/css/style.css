@@ -5,3 +5,8 @@
     border:1px solid black;
     margin:10px;
 }
+
+.inserted-at {
+    font-size: 10px;
+    font-style: italic;
+}
