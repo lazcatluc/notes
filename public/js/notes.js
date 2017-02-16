@@ -1,26 +1,22 @@
 module.controller('NotesController',
-    function($scope, $http) {
+    function($scope, $http, $routeParams, $location) {
         $scope.notes = [];
 
+        if ($routeParams.section) {
+            $scope.activeSection = {title: $routeParams.section};
+        }
+
         var update = function() {
-            var params = {params:{section:$scope.activeSection.title}};
-            $http.get("/notes", params)
-                .success(function(notes) {
-                    $scope.notes = notes;
-                });
+            $location.path($scope.activeSection?$scope.activeSection.title:'/');
         };
 
         $scope.add = function() {
             $http.post("/notes", {text: $scope.text, section: $scope.activeSection.title})
-                .success(function() {
-                    $scope.text = "";
-                    update();
-                });
+                .success(update);
         };
         
         $scope.remove = function (noteId) {
-            $http.delete("/notes", {params: {id:noteId}});
-            update();
+            $http.delete("/notes", {params: {id:noteId}}).success(update);
         };
 
         var readSections = function() {
@@ -28,17 +24,15 @@ module.controller('NotesController',
                 .success(function(sections) {
                     $scope.sections = sections;
                     $scope.activeSection = $scope.activeSection||sections[0];
-                    update();
                 });
         };
 
         $scope.showSection = function(section) {
-            $scope.activeSection = section;
-            update();
+            $location.path(section.title);
         };
 
         $scope.writeSections = function() {
-            $http.post("/sections/replace", $scope.sections);
+            $http.post("/sections/replace", $scope.sections).success(update);
         };
 
         $scope.removeSection = function(section) {
@@ -53,7 +47,6 @@ module.controller('NotesController',
                 $scope.activeSection = $scope.sections[0];
             }
             $scope.writeSections();
-            update();
         }
 
         $scope.addSection = function() {
@@ -71,9 +64,7 @@ module.controller('NotesController',
             $scope.activeSection = section;
             $scope.newSection = "";
             $scope.writeSections();
-            update();
         }
-
 
         readSections();
     });
