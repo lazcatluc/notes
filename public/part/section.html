@@ -1,0 +1,16 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{section.title}}</h3>
+    </div>
+
+    <div class="list-notes">
+        <ul class="list-group" ng-repeat="note in notes">
+            <li class="list-group-item">
+                <div>{{note.text}}</div>
+                <span class="inserted-at">{{note.date | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+                <button ng-click="remove(note._id)" class="btn btn-warning">Remove</button>
+                <button ng-click="moveToTop(note)" class="btn btn-primary">Move to top</button>
+            </li>
+        </ul>
+    </div>
+</div>

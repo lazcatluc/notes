@@ -17,12 +17,6 @@ li button {
     top: 5px;
 }
 
-li .list-notes {
-    margin-top: 20px;
-    color: black;
-    text-shadow: none;
-}
-
-li .list-notes .btn-warning {
+.list-notes .btn-warning {
     right: 115px;
 }

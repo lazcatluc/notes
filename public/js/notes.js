@@ -23,11 +23,6 @@ module.controller('NotesController',
             update();
         };
 
-        $scope.moveToTop = function (note) {
-            $http.post("/top", note);
-            update();
-        };
-
         var readSections = function() {
             $http.get("/sections")
                 .success(function(sections) {
