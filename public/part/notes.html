@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Add your note to {{activeSection.title}}</h3>
+            </div>
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <textarea class="form-control" ng-model="text"></textarea>
+                </div>
+                <button ng-click="add()" class="btn btn-primary">Post note</button>
+            </div>
+        </div>
+        <div class="panel panel-default">
+
+            <ul class="list-group" dnd-list="sections">
+                <li href="#" class="list-group-item"
+                    dnd-draggable="section"
+                    dnd-moved="sections.splice($index, 1); writeSections();"
+                    ng-repeat="section in sections"
+                    ng-click="showSection(section)"
+                    ng-class="{active: section.title===activeSection.title}">
+                    <span>{{section.title}}</span>
+                    <button ng-click="removeSection(section)" ng-disabled="sections.length===1"
+                            class="btn btn-warning">Delete</button>
+                    <div class="list-notes">
+                        <ul class="list-group" ng-repeat="note in notes" ng-hide="section.title!==activeSection.title">
+                            <li class="list-group-item">
+                                <div>{{note.text}}</div>
+                                <span class="inserted-at">{{note.date | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+                                <button ng-click="remove(note._id)" class="btn btn-warning">Remove</button>
+                                <button ng-click="moveToTop(note)" class="btn btn-primary">Move to top</button>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+        <div class="input-group" style="padding-bottom:20px">
+            <input type="text" class="form-control"
+                   placeholder="New section name" ng-model="newSection">
+            <span class="input-group-btn">
+                <button class="btn btn-default"
+                           ng-click="addSection()">Add</button>
+            </span>
+        </div>
+    </div>
+</div>

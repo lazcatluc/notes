@@ -1,4 +1,3 @@
-var module = angular.module('myapp', ['dndLists']);
 module.controller('NotesController',
     function($scope, $http) {
         $scope.notes = [];
