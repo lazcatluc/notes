@@ -3,6 +3,13 @@
         <h3 class="panel-title">{{section.title}}</h3>
     </div>
 
+    <div class="panel-body">
+        <div class="form-group">
+            <textarea class="form-control" ng-model="text"></textarea>
+        </div>
+        <button ng-click="add()" class="btn btn-primary">Post note</button>
+    </div>
+
     <div class="list-notes">
         <ul class="list-group" ng-repeat="note in notes">
             <li class="list-group-item">

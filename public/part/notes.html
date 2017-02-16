@@ -3,28 +3,23 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Add your note to
-                    <a ng-href="#/sections/{{activeSection.title}}">
-                        {{activeSection.title}}
+                    <a ng-href="#/sections/{{activeSection().title}}">
+                        {{activeSection().title}}
                     </a>
                 </h3>
             </div>
 
-            <div class="panel-body">
-                <div class="form-group">
-                    <textarea class="form-control" ng-model="text"></textarea>
-                </div>
-                <button ng-click="add()" class="btn btn-primary">Post note</button>
-            </div>
+
         </div>
         <div class="panel panel-default">
 
-            <ul class="list-group" dnd-list="sections">
+            <ul class="list-group list-sections" dnd-list="sections">
                 <li href="#" class="list-group-item"
                     dnd-draggable="section"
                     dnd-moved="sections.splice($index, 1); writeSections();"
                     ng-repeat="section in sections"
                     ng-click="showSection(section)"
-                    ng-class="{active: section.title===activeSection.title}">
+                    ng-class="{active: section.title===activeSection().title}">
                     <span>{{section.title}}</span>
                     <button ng-click="removeSection(section)" ng-disabled="sections.length===1"
                             class="btn btn-warning">Delete</button>

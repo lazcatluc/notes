@@ -11,12 +11,8 @@
     font-style: italic;
 }
 
-li button {
+.list-sections button {
     position: absolute;
     right: 10px;
-    top: 5px;
-}
-
-.list-notes .btn-warning {
-    right: 115px;
+    top: 3px;
 }
