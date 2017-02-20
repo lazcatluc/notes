@@ -24,11 +24,23 @@ db.open(function(){
         db.sections = sections;
     });
 
+    db.collection('users', function(error, users) {
+        db.users = users;
+    });
+
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(session({
+    store: new MongoStore({
+        url: 'mongodb://localhost:27017/angular_session'
+    }),
+    secret: 'angular_tutorial',
+    resave: true,
+    saveUninitialized: true
+}));
 
 function findNotesInOrder(query, order) {
     if (order === undefined) {
@@ -100,6 +112,56 @@ app.delete("/notes", function(req,res) {
         res.end();
     });
 
+});
+
+app.get("/users", function(req,res) {
+    db.users.find({username: req.query.username}).limit(1).toArray(function(err, items) {
+        if (items.length === 0) {
+            return res.status(404).send({error: 'User "' + req.query.username + '" not found'});
+        }
+        res.send(items[0]);
+    });
+});
+
+app.post("/users", function(req,res) {
+    var user = req.body;
+    db.users.find({username: user.username}).limit(1).toArray(function(err, items) {
+        if (items.length > 0) {
+            res.status(409).send({error: 'User "' + user.username + '" already exists'});
+        }
+        else {
+            db.users.insert(user, function(resp) {
+                req.session.user = user;
+                res.end();
+            });
+        }
+    });
+});
+
+app.get("/users/current", function(req,res) {
+    var user = req.session.user;
+    if (user) {
+        res.send(user);
+    }
+    else {
+        res.status(404).send({error: 'Not logged in'});
+    }
+});
+
+app.post("/users/current", function(req,res) {
+    var user = req.body;
+    db.users.find(user).limit(1).toArray(function(err, items) {
+        if (items.length === 0) {
+            res.status(403).send({error: 'Invalid username or password'});
+        }
+        req.session.user = items[0];
+        res.send(items[0]);
+    });
+});
+
+app.delete("/users/current", function(req,res) {
+    req.session.user = undefined;
+    res.end();
 });
 
 app.listen(3000);

@@ -7,6 +7,7 @@
         <script src="js/routes/angular-route.min.js"></script>
         <script src="js/routes/routes.js"></script>
         <script src="js/menu.js"></script>
+        <script src="js/register.js"></script>
         <script src="js/notes.js"></script>
         <script src="js/section.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -19,14 +20,29 @@
                 <div class="navbar-header">
                     <div class="navbar-brand">Notes tutorial app</div>
                 </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav" ng-controller="MenuController">
+                <div id="navbar" class="navbar-collapse collapse" ng-controller="MenuController">
+
+                    <ul class="nav navbar-nav">
                         <li ng-class="{active: activeSections()}"><a href="#">Sections</a></li>
                         <li ng-repeat="section in sections" ng-class="{active: active(section)}">
                             <a ng-href="#/sections/{{section.title}}">{{section.title}}</a>
                         </li>
                     </ul>
 
+                    <form class="navbar-form navbar-right" ng-hide="user">
+                        <div class="form-group">
+                            <input type="text" placeholder="Username" class="form-control" ng-model="username">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" class="form-control" ng-model="password">
+                        </div>
+                        <button type="submit" class="btn btn-success" ng-click="signin()">Sign in</button>
+                        <a class="btn btn-primary" ng-href="#/register">Register</a>
+                    </form>
+                    <form class="navbar-form navbar-right" ng-show="user">
+                        <span class="username">Logged in as {{user.username}}</span>
+                        <a class="btn btn-primary" ng-click="logout()">Logout</a>
+                    </form>
                 </div><!--/.navbar-collapse -->
             </div>
         </nav>

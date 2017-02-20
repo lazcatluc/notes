@@ -16,3 +16,11 @@
     right: 10px;
     top: 3px;
 }
+
+.navbar-form.navbar-right input {
+    width: 100px;
+}
+
+.username {
+    color: white;
+}

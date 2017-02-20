@@ -1,0 +1,32 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">User registration form</div>
+    <div class="panel-body">
+        <form class="css-form" name="userForm" novalidate>
+            <div class="form-group">
+                <label for="userName">User name</label>
+                <input type="text" class="form-control" id="userName" name="userName" placeholder="Username" ng-model="user.username" unique-user>
+            </div>
+            <span ng-show="userForm.userName.$dirty && userForm.userName.$error.unique">
+                User name is not unique
+            </span>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="user.password">
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox"
+                              ng-model="user.subscribe">
+                    Subscribe for newsletters
+                </label>
+            </div>
+            <div ng-show="user.subscribe" class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email" ng-model="user.email">
+            </div>
+            <button type="submit" ng-disabled="userForm.$invalid" class="btn btn-primary" ng-click="submitForm()">Submit</button>
+        </form>
+    </div>
+
+    <div class="error">{{error}}</div>
+</div>
